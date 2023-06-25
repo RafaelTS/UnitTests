@@ -4,7 +4,10 @@ import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
 
+
 import java.util.Date;
+
+import static br.sc.rafael.Utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
 
@@ -26,7 +29,4 @@ public class LocacaoService {
         return locacao;
     }
 
-    public static void main(String[] args) {
-
-    }
 }
