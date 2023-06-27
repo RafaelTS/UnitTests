@@ -3,6 +3,9 @@ package br.sc.rafael.services;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
+import br.sc.rafael.exceptions.FilmeSemEstoqueException;
+import br.sc.rafael.exceptions.LocadoraException;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -41,7 +44,7 @@ public class LocacaoServiceTest {
 
     }
 
-    @Test(expected=Exception.class)
+    @Test(expected= FilmeSemEstoqueException.class)
     public void testeLocacao_filmeSemEstoque() throws Exception {
 
         //cenario
@@ -53,32 +56,18 @@ public class LocacaoServiceTest {
     }
 
     @Test
-    public void testeLocacao_filmeSemEstoque_2()  {
+    public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 
-        //cenario
         LocacaoService service = new LocacaoService();
-        Usuario usuario = new Usuario("Usuario 1");
-        Filme filme = new Filme("Filme 1", 0, 5.0);
+        Filme filme = new Filme("Filme 1", 1, 5.0);
 
         try {
-            service.alugarFilme(usuario, filme);
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("Filme sem estoque"));
+            service.alugarFilme(null, filme);
+            fail();
+        } catch (LocadoraException e) {
+            assertThat(e.getMessage(), is("Usuario vazio"));
         }
-    }
 
-    @Test
-    public void testeLocacao_filmeSemEstoque_3() throws Exception {
-
-        //cenario
-        LocacaoService service = new LocacaoService();
-        Usuario usuario = new Usuario("Usuario 1");
-        Filme filme = new Filme("Filme 1", 0, 5.0);
-
-        exception.expect(Exception.class);
-        exception.expectMessage("Filme sem estoque");
-
-        service.alugarFilme(usuario, filme);
 
     }
 }
