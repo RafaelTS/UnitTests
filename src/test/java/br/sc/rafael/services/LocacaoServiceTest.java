@@ -5,9 +5,7 @@ import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
 import br.sc.rafael.exceptions.FilmeSemEstoqueException;
 import br.sc.rafael.exceptions.LocadoraException;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
@@ -19,17 +17,27 @@ import static org.junit.Assert.*;
 
 public class LocacaoServiceTest {
 
+    private LocacaoService service;
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Before
+    public void setup() {
+        service = new LocacaoService();
+    }
+
+    @After
+    public void tearDown() {
+
+    }
+
     @Test
     public void testeLocacao() throws Exception {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme =  new Filme("Filme 1", 2, 5.0);
 
@@ -48,7 +56,6 @@ public class LocacaoServiceTest {
     public void testeLocacao_filmeSemEstoque() throws Exception {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme 1", 0, 5.0);
 
@@ -58,7 +65,6 @@ public class LocacaoServiceTest {
     @Test
     public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 
-        LocacaoService service = new LocacaoService();
         Filme filme = new Filme("Filme 1", 1, 5.0);
 
         try {
@@ -73,7 +79,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
 
         exception.expect(LocadoraException.class);
