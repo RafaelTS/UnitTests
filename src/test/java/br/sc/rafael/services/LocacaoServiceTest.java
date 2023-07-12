@@ -1,5 +1,6 @@
 package br.sc.rafael.services;
 
+import br.sc.rafael.Utils.DataUtils;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -11,6 +12,7 @@ import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -151,6 +153,19 @@ public class LocacaoServiceTest {
 
         //verificacao
         assertThat(resultado.getValor(), is(14.0));
+
+    }
+
+    @Test
+    public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
+
+        Usuario usuario = new Usuario("Usuario 1");
+        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
+
+        Locacao retorno = service.alugarFilme(usuario,filmes);
+
+        boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+        Assert.assertTrue(ehSegunda);
 
     }
 

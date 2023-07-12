@@ -1,5 +1,6 @@
 package br.sc.rafael.services;
 
+import br.sc.rafael.Utils.DataUtils;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -7,6 +8,7 @@ import br.sc.rafael.exceptions.FilmeSemEstoqueException;
 import br.sc.rafael.exceptions.LocadoraException;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +54,9 @@ public class LocacaoService {
         //Entrega no dia seguinte
         Date dataEntrega = new Date();
         dataEntrega = adicionarDias(dataEntrega, 1);
+        if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {
+            dataEntrega = adicionarDias(dataEntrega, 1);
+        }
         locacao.setDataRetorno(dataEntrega);
 
         //Salvando a locacao...
