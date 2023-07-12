@@ -140,6 +140,7 @@ public class LocacaoServiceTest {
         assertThat(resultado.getValor(), is(14.0));
 
     }
+
     @Test
     public void devePagar0PctNoFilme5() throws FilmeSemEstoqueException, LocadoraException {
 
