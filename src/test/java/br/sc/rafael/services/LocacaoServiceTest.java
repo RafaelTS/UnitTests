@@ -6,6 +6,7 @@ import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
 import br.sc.rafael.exceptions.FilmeSemEstoqueException;
 import br.sc.rafael.exceptions.LocadoraException;
+import br.sc.rafael.matchers.DiaSemanaMatcher;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
@@ -105,6 +106,12 @@ public class LocacaoServiceTest {
 
         boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
         Assert.assertTrue(ehSegunda);
+
+        //OU USANDO PELO MATCHER CRIADO
+        Assert.assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
+
+//        Assert.assertThat(retorno.getDataRetorno(), caiEm(Calendar.MONDAY));
+//        Assert.assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 
     }
 }
