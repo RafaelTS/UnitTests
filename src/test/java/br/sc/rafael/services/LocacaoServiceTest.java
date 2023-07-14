@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 import static br.sc.rafael.Utils.DataUtils.*;
+import static br.sc.rafael.matchers.MyMatchers.caiEm;
+import static br.sc.rafael.matchers.MyMatchers.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -110,8 +112,9 @@ public class LocacaoServiceTest {
         //OU USANDO PELO MATCHER CRIADO
         Assert.assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
 
-//        Assert.assertThat(retorno.getDataRetorno(), caiEm(Calendar.MONDAY));
-//        Assert.assertThat(retorno.getDataRetorno(), caiNumaSegunda());
+        //or specifing myMatcher
+        Assert.assertThat(retorno.getDataRetorno(), caiEm(Calendar.MONDAY));
+        Assert.assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 
     }
 }
