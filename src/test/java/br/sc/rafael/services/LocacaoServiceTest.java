@@ -11,15 +11,13 @@ import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static br.sc.rafael.Utils.DataUtils.*;
-import static br.sc.rafael.matchers.MyMatchers.caiEm;
-import static br.sc.rafael.matchers.MyMatchers.caiNumaSegunda;
+import static br.sc.rafael.matchers.MyMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -58,6 +56,9 @@ public class LocacaoServiceTest {
             error.checkThat(locacao.getValor(), is(not(3.0)));
             error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
             error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+            //NEW MATCHERS
+            error.checkThat(locacao.getDataLocacao(), ehHoje());
+            error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDias(1));
 
     }
 
