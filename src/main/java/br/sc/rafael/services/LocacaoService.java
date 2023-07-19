@@ -1,6 +1,7 @@
 package br.sc.rafael.services;
 
 import br.sc.rafael.Utils.DataUtils;
+import br.sc.rafael.daos.LocacaoDAO;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -15,6 +16,8 @@ import java.util.List;
 import static br.sc.rafael.Utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
+
+    private LocacaoDAO dao;
 
     public Locacao alugarFilme(Usuario usuario, List <Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
@@ -60,7 +63,7 @@ public class LocacaoService {
         locacao.setDataRetorno(dataEntrega);
 
         //Salvando a locacao...
-        //TODO adicionar método para salvar
+        dao.salvar(locacao);
 
         return locacao;
     }
