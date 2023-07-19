@@ -1,5 +1,7 @@
 package br.sc.rafael.services;
 
+import br.sc.rafael.daos.LocacaoDAO;
+import br.sc.rafael.daos.LocacaoDAOFake;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -42,6 +44,8 @@ public class CalculoValorLocacaoTest {
     @Before
     public void setup() {
         service = new LocacaoService();
+        LocacaoDAO dao = new LocacaoDAOFake();
+        service.setLocacaoDAO(dao);
     }
 
     @Parameterized.Parameters(name="{2}")
