@@ -144,10 +144,10 @@ public class LocacaoServiceTest {
         Usuario usuario = umUsuario().agora();
         List <Filme> filmes = Arrays.asList(umFilme().agora());
 
+        when(spc.possuiNegativacao(usuario)).thenReturn(true);
+
         exception.expect(LocadoraException.class);
         exception.expectMessage("Usuário negativado");
-
-        when(spc.possuiNegativacao(usuario)).thenReturn(true);
 
         //acao
         service.alugarFilme(usuario, filmes);
