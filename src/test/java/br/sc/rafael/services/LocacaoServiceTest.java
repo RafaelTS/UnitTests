@@ -2,6 +2,7 @@ package br.sc.rafael.services;
 
 import br.sc.rafael.Utils.DataUtils;
 import br.sc.rafael.builders.FilmeBuilder;
+import br.sc.rafael.builders.LocacaoBuilder;
 import br.sc.rafael.builders.UsuarioBuilder;
 import br.sc.rafael.daos.LocacaoDAO;
 import br.sc.rafael.daos.LocacaoDAOFake;
@@ -28,6 +29,7 @@ import static br.sc.rafael.builders.UsuarioBuilder.umUsuario;
 import static br.sc.rafael.matchers.MyMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class LocacaoServiceTest {
@@ -35,7 +37,7 @@ public class LocacaoServiceTest {
     private LocacaoService service;
     private SPCService spc;
     private LocacaoDAO dao;
-
+    private EmailService emailService;
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
@@ -49,6 +51,8 @@ public class LocacaoServiceTest {
         service.setLocacaoDAO(dao);
         spc = Mockito.mock(SPCService.class);
         service.setSpcService(spc);
+        emailService = Mockito.mock(EmailService.class);
+        service.setEmailService(emailService);
     }
 
     @After
@@ -151,5 +155,28 @@ public class LocacaoServiceTest {
 
         //acao
         service.alugarFilme(usuario, filmes);
+
+        //verificacao
+        Mockito.verify(spc).possuiNegativacao(usuario);
+    }
+
+    @Test
+    public void deveEnviarEmailParaLocacoesAtrasadas() {
+        //cenario
+        Usuario usuario = umUsuario().agora();
+        List<Locacao> locacoes = Arrays.asList(LocacaoBuilder.umaLocacao()
+                                .comUsuario(usuario)
+                                .comDataRetorno(obterDataComDiferencaDias(-2))
+                                .agora());
+
+        when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
+
+        //acao
+        service.notificarAtrasos();
+
+        //verificacao
+        Mockito.verify(emailService).notificarAtraso(usuario);
+
+
     }
 }
