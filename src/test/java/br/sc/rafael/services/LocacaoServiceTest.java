@@ -146,6 +146,7 @@ public class LocacaoServiceTest {
     public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException {
         //cenário
         Usuario usuario = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuario 2").agora();
         List <Filme> filmes = Arrays.asList(umFilme().agora());
 
         when(spc.possuiNegativacao(usuario)).thenReturn(true);
@@ -166,10 +167,12 @@ public class LocacaoServiceTest {
     public void deveEnviarEmailParaLocacoesAtrasadas() {
         //cenario
         Usuario usuario = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuário em dia").agora();
         List<Locacao> locacoes = Arrays.asList(LocacaoBuilder.umaLocacao()
                                 .comUsuario(usuario)
                                 .comDataRetorno(obterDataComDiferencaDias(-2))
-                                .agora());
+                                .agora(),
+                            LocacaoBuilder.umaLocacao().comUsuario(usuario2).agora());
 
         when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 
