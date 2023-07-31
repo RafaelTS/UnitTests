@@ -25,6 +25,7 @@ import java.util.List;
 import static br.sc.rafael.Utils.DataUtils.*;
 import static br.sc.rafael.builders.FilmeBuilder.umFilme;
 import static br.sc.rafael.builders.FilmeBuilder.umFilmeSemEstoque;
+import static br.sc.rafael.builders.LocacaoBuilder.umaLocacao;
 import static br.sc.rafael.builders.UsuarioBuilder.umUsuario;
 import static br.sc.rafael.matchers.MyMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -167,11 +168,9 @@ public class LocacaoServiceTest {
         //cenario
         Usuario usuario = umUsuario().agora();
         Usuario usuario2 = umUsuario().comNome("Usuário em dia").agora();
-        List<Locacao> locacoes = Arrays.asList(LocacaoBuilder.umaLocacao()
-                                .comUsuario(usuario)
-                                .comDataRetorno(obterDataComDiferencaDias(-2))
-                                .agora(),
-                            LocacaoBuilder.umaLocacao().comUsuario(usuario2).agora());
+        List<Locacao> locacoes = Arrays.asList(
+                            umaLocacao().atrasada().comUsuario(usuario).agora(),
+                            umaLocacao().comUsuario(usuario2).agora());
 
         when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 
@@ -180,7 +179,5 @@ public class LocacaoServiceTest {
 
         //verificacao
         Mockito.verify(emailService).notificarAtraso(usuario);
-
-
     }
 }

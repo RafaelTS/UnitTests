@@ -77,7 +77,9 @@ public class LocacaoService {
     public void notificarAtrasos() {
         List<Locacao> locacaes = dao.obterLocacoesPendentes();
         for (Locacao locacao: locacaes) {
-            emailService.notificarAtraso(locacao.getUsuario());
+            if (locacao.getDataRetorno().before(new Date())){
+                emailService.notificarAtraso(locacao.getUsuario());
+            }
         }
     }
 
