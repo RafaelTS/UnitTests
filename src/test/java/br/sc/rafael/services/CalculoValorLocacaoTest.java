@@ -1,7 +1,6 @@
 package br.sc.rafael.services;
 
 import br.sc.rafael.daos.LocacaoDAO;
-import br.sc.rafael.daos.LocacaoDAOFake;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -11,7 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +26,14 @@ import static org.junit.Assert.assertThat;
 @RunWith(Parameterized.class)
 public class CalculoValorLocacaoTest {
 
+    @InjectMocks
     private  LocacaoService service;
+
+    @Mock
+    private LocacaoDAO dao;
+
+    @Mock
+    private SPCService spc;
 
     @Parameterized.Parameter
     public List <Filme> filmes;
@@ -44,11 +53,7 @@ public class CalculoValorLocacaoTest {
 
     @Before
     public void setup() {
-        service = new LocacaoService();
-        LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
-        service.setLocacaoDAO(dao);
-        SPCService spc = Mockito.mock(SPCService.class);
-        service.setSpcService(spc);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Parameterized.Parameters(name="{2}")

@@ -1,11 +1,7 @@
 package br.sc.rafael.services;
 
 import br.sc.rafael.Utils.DataUtils;
-import br.sc.rafael.builders.FilmeBuilder;
-import br.sc.rafael.builders.LocacaoBuilder;
-import br.sc.rafael.builders.UsuarioBuilder;
 import br.sc.rafael.daos.LocacaoDAO;
-import br.sc.rafael.daos.LocacaoDAOFake;
 import br.sc.rafael.entities.Filme;
 import br.sc.rafael.entities.Locacao;
 import br.sc.rafael.entities.Usuario;
@@ -15,8 +11,10 @@ import br.sc.rafael.matchers.DiaSemanaMatcher;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -35,10 +33,16 @@ import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest {
 
+    @InjectMocks
     private LocacaoService service;
+
+    @Mock
     private SPCService spc;
+    @Mock
     private LocacaoDAO dao;
+    @Mock
     private EmailService emailService;
+
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
@@ -47,13 +51,7 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup() {
-        service = new LocacaoService();
-        dao = Mockito.mock(LocacaoDAO.class);
-        service.setLocacaoDAO(dao);
-        spc = Mockito.mock(SPCService.class);
-        service.setSpcService(spc);
-        emailService = Mockito.mock(EmailService.class);
-        service.setEmailService(emailService);
+        MockitoAnnotations.initMocks(this);
     }
 
     @After
