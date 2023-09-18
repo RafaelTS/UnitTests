@@ -187,4 +187,9 @@ public class LocacaoServiceTest {
         verifyNoMoreInteractions(emailService);
 
     }
+
+    @Test
+    public void deveTratarErroNoSPC() {
+
+    }
 }
