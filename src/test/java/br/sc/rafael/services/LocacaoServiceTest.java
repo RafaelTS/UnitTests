@@ -11,10 +11,7 @@ import br.sc.rafael.matchers.DiaSemanaMatcher;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -202,6 +199,24 @@ public class LocacaoServiceTest {
 
         //acao
         service.alugarFilme(usuario, filmes);
+    }
+
+    @Test
+    public void deveProrrogarUmaLocacao() {
+        //cenário
+        Locacao locacao = umaLocacao().agora();
+
+        //acao
+        service.prorrogarLocacao(locacao, 3);
+
+        //verificacao
+        ArgumentCaptor<Locacao> argumentCaptor = ArgumentCaptor.forClass(Locacao.class);
+        Mockito.verify(dao).salvar(argumentCaptor.capture());
+        Locacao locacaoRetornada = argumentCaptor.getValue();
+
+        assertThat(locacaoRetornada.getValor(), is (12.0));
+        assertThat(locacaoRetornada.getDataLocacao(), ehHoje());
+        assertThat(locacaoRetornada.getDataRetorno(), ehHojeComDiferencaDias(3));
 
     }
 }
