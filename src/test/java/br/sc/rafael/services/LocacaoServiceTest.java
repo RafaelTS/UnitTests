@@ -12,6 +12,7 @@ import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import org.mockito.*;
+import org.powermock.api.mockito.PowerMockito;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -58,11 +59,11 @@ public class LocacaoServiceTest {
 
     @Test
     public void deveAlugarFilmeComSucesso() throws Exception {
-        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
-
         //cenario
         Usuario usuario = umUsuario().agora();
         List <Filme> filmes = Arrays.asList(umFilme().comValor(5.0).agora());
+
+        PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(DataUtils.obterData(28,4,2017));
 
         //acao
         Locacao locacao = service.alugarFilme(usuario, filmes);
@@ -79,7 +80,7 @@ public class LocacaoServiceTest {
     }
 
     @Test(expected= FilmeSemEstoqueException.class)
-    public void deveLancarExccaoAoAlugarFilmeSemEstoque() throws Exception {
+    public void deveLancarExcecaoAoAlugarFilmeSemEstoque() throws Exception {
 
         //cenario
         Usuario usuario = umUsuario().agora();
@@ -119,17 +120,19 @@ public class LocacaoServiceTest {
 
     @Test
     public void deveDevolverNaSegundaAoAlugarNoSabado() throws Exception {
-        Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
-
+        //cenario
         Usuario usuario = umUsuario().agora();
         List <Filme> filmes = Arrays.asList(umFilme().agora());
 
+        PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(DataUtils.obterData(29,4,2017));
+
+        //acao
         Locacao retorno = service.alugarFilme(usuario,filmes);
 
         boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
         Assert.assertTrue(ehSegunda);
 
-        //OU USANDO PELO MATCHER CRIADO
+        //VERIFICACAO - USANDO O MATCHER CRIADO
         Assert.assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
 
         //or specifing myMatcher
